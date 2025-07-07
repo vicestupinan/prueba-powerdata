@@ -9,6 +9,15 @@ Este proyecto es un microservicio desarrollado con **Spring WebFlux**, basado en
 - Docker y Docker Compose
 - AWS CLI configurado (para local con DynamoDB)
 
+## Levantar entorno Docker Compose
+El archivo docker-compose.yml levanta los siguientes servicios:
+
+DynamoDB local
+
+RabbitMQ
+
+docker-compose up --build
+
 ## Ejecutar el Servicio
 
 Para ejecutar el microservicio localmente:
@@ -49,12 +58,3 @@ Resultado esperado:
 
 ## Ejecutar pruebas
 gradle test
-
-## Levantar entorno Docker Compose
-El archivo docker-compose.yml levanta los siguientes servicios:
-
-DynamoDB local
-
-RabbitMQ
-
-docker-compose up --build
