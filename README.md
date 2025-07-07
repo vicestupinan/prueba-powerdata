@@ -15,7 +15,7 @@ Para ejecutar el microservicio localmente:
 
 gradle clean build
 
-gradle bootRun --args='--spring.profiles.active=local'
+gradle bootRun
 
 ## Ejecutar el Servicio **/stats**
 
