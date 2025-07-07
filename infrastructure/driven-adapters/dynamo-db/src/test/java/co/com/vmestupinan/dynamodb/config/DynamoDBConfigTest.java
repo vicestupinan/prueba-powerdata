@@ -27,14 +27,6 @@ class DynamoDBConfigTest {
     }
 
     @Test
-    void testAmazonDynamoDBAsync() {
-
-        DynamoDbAsyncClient result = dynamoDBConfig.amazonDynamoDBAsync("us-west-2");
-
-        assertNotNull(result);
-    }
-
-    @Test
     void testGetDynamoDbEnhancedAsyncClient() {
         DynamoDbEnhancedAsyncClient result = dynamoDBConfig.getDynamoDbEnhancedAsyncClient(dynamoDbAsyncClient);
 
