@@ -18,6 +18,7 @@ gradle bootRun --args='--spring.profiles.active=local'
 ## Ejecutar el Servicio **/stats**
 
 Ejemplo entrada:
+```bash
 curl -X POST http://localhost:8080/stats \
   -H "Content-Type: application/json" \
   -d '{
@@ -30,8 +31,10 @@ curl -X POST http://localhost:8080/stats \
     "motivoCambio": 8,
     "hash": "5484062a4be1ce5645eb414663e14f56"
 }'
+```
 
 Resultado esperado:
+```bash
 {
   "status": "SUCCESS",
   "message": "Statistics processed successfully",
@@ -40,6 +43,7 @@ Resultado esperado:
     ...
   }
 }
+```
 
 ## Ejecutar pruebas
 gradle test
