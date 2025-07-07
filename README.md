@@ -18,6 +18,17 @@ RabbitMQ
 
 docker-compose up --build
 
+## Creacion de tablas en dynamo
+```bash
+aws dynamodb create-table `
+--table-name stats `
+--attribute-definitions AttributeName=timestamp,AttributeType=S `
+--key-schema AttributeName=timestamp,KeyType=HASH `
+--provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 `
+--endpoint-url http://localhost:8000 `
+--region us-west-2
+```
+
 ## Ejecutar el Servicio
 
 Para ejecutar el microservicio localmente:
