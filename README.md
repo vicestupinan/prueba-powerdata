@@ -12,7 +12,9 @@ Este proyecto es un microservicio desarrollado con **Spring WebFlux**, basado en
 ## Ejecutar el Servicio
 
 Para ejecutar el microservicio localmente:
+
 gradle clean build
+
 gradle bootRun --args='--spring.profiles.active=local'
 
 ## Ejecutar el Servicio **/stats**
@@ -52,6 +54,7 @@ gradle test
 El archivo docker-compose.yml levanta los siguientes servicios:
 
 DynamoDB local
+
 RabbitMQ
 
 docker-compose up --build
