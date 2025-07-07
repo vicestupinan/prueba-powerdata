@@ -1,47 +1,53 @@
-# Proyecto Base Implementando Clean Architecture
+# PowerData - Microservicio de Procesamiento de Estadísticas
 
-## Antes de Iniciar
+Este proyecto es un microservicio desarrollado con **Spring WebFlux**, basado en el **scaffold de Clean Architecture** de Bancolombia, y persiste los datos en **DynamoDB**. Expone un endpoint `/stats` que procesa estadísticas enviadas como JSON.
 
-Empezaremos por explicar los diferentes componentes del proyectos y partiremos de los componentes externos, continuando con los componentes core de negocio (dominio) y por último el inicio y configuración de la aplicación.
+## Prerrequisitos
 
-Lee el artículo [Clean Architecture — Aislando los detalles](https://medium.com/bancolombia-tech/clean-architecture-aislando-los-detalles-4f9530f35d7a)
+- Java 21
+- Gradle
+- Docker y Docker Compose
+- AWS CLI configurado (para local con DynamoDB)
 
-# Arquitectura
+## Ejecutar el Servicio
 
-![Clean Architecture](https://miro.medium.com/max/1400/1*ZdlHz8B0-qu9Y-QO3AXR_w.png)
+Para ejecutar el microservicio localmente:
+gradle clean build
+gradle bootRun --args='--spring.profiles.active=local'
 
-## Domain
+## Ejecutar el Servicio **/stats**
 
-Es el módulo más interno de la arquitectura, pertenece a la capa del dominio y encapsula la lógica y reglas del negocio mediante modelos y entidades del dominio.
+Ejemplo entrada:
+curl -X POST http://localhost:8080/stats \
+  -H "Content-Type: application/json" \
+  -d '{
+    "totalContactoClientes": 250,
+    "motivoReclamo": 25,
+    "motivoGarantia": 10,
+    "motivoDuda": 100,
+    "motivoCompra": 100,
+    "motivoFelicitaciones": 7,
+    "motivoCambio": 8,
+    "hash": "5484062a4be1ce5645eb414663e14f56"
+}'
 
-## Usecases
+Resultado esperado:
+{
+  "status": "SUCCESS",
+  "message": "Statistics processed successfully",
+  "timestamp": "2025-07-07T01:23:45Z",
+  "data": {
+    ...
+  }
+}
 
-Este módulo gradle perteneciente a la capa del dominio, implementa los casos de uso del sistema, define lógica de aplicación y reacciona a las invocaciones desde el módulo de entry points, orquestando los flujos hacia el módulo de entities.
+## Ejecutar pruebas
+gradle test
 
-## Infrastructure
+## Levantar entorno Docker Compose
+El archivo docker-compose.yml levanta los siguientes servicios:
 
-### Helpers
+DynamoDB local
+RabbitMQ
 
-En el apartado de helpers tendremos utilidades generales para los Driven Adapters y Entry Points.
-
-Estas utilidades no están arraigadas a objetos concretos, se realiza el uso de generics para modelar comportamientos
-genéricos de los diferentes objetos de persistencia que puedan existir, este tipo de implementaciones se realizan
-basadas en el patrón de diseño [Unit of Work y Repository](https://medium.com/@krzychukosobudzki/repository-design-pattern-bc490b256006)
-
-Estas clases no puede existir solas y debe heredarse su compartimiento en los **Driven Adapters**
-
-### Driven Adapters
-
-Los driven adapter representan implementaciones externas a nuestro sistema, como lo son conexiones a servicios rest,
-soap, bases de datos, lectura de archivos planos, y en concreto cualquier origen y fuente de datos con la que debamos
-interactuar.
-
-### Entry Points
-
-Los entry points representan los puntos de entrada de la aplicación o el inicio de los flujos de negocio.
-
-## Application
-
-Este módulo es el más externo de la arquitectura, es el encargado de ensamblar los distintos módulos, resolver las dependencias y crear los beans de los casos de use (UseCases) de forma automática, inyectando en éstos instancias concretas de las dependencias declaradas. Además inicia la aplicación (es el único módulo del proyecto donde encontraremos la función “public static void main(String[] args)”.
-
-**Los beans de los casos de uso se disponibilizan automaticamente gracias a un '@ComponentScan' ubicado en esta capa.**
+docker-compose up --build
